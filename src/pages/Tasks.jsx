@@ -10,6 +10,20 @@ const Tasks = () => {
   const [editingIndex, setEditingIndex] = useState(null); // Tracks the index of the task being edited
   const [editText, setEditText] = useState(""); // Tracks the updated task text
 
+  const [filter, setFilter] = useState("all"); // "all", "completed", or "incomplete"
+
+  const getFilteredTasks = () => {
+    if (filter === "completed") {
+      return tasks.filter((task) => task.completed);
+    }
+    if (filter === "incomplete") {
+      return tasks.filter((task) => !task.completed);
+    }
+    return tasks; // Default: Show all tasks
+  };
+
+  const filteredTasks = getFilteredTasks();
+
   const handleAddTask = () => {
     if (newTask.trim() !== "") {
       addTask(newTask);
@@ -36,6 +50,11 @@ const Tasks = () => {
   return (
     <div>
       <h1>Task List</h1>
+      <div>
+        <button onClick={() => setFilter("all")}>All</button>
+        <button onClick={() => setFilter("completed")}>Completed</button>
+        <button onClick={() => setFilter("incomplete")}>Incomplete</button>
+      </div>
       <input
         type="text"
         value={newTask || ""}
@@ -45,7 +64,7 @@ const Tasks = () => {
       <button onClick={handleAddTask}>Add Task</button>
 
       <ul>
-        {tasks.map((task, index) => (
+        {filteredTasks.map((task, index) => (
           <li key={index}>
             {editingIndex === index ? (
               // Edit mode
