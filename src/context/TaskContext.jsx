@@ -15,8 +15,8 @@ export const TaskProvider = ({ children }) => {
     localStorage.setItem("tasks", JSON.stringify(tasks));
   }, [tasks]);
 
-  const addTask = (taskText) => {
-    const newTask = { text: taskText, completed: false };
+  const addTask = (taskText, priority) => {
+    const newTask = { text: taskText, completed: false, priority };
     setTasks([...tasks, newTask]);
   };
 
@@ -24,10 +24,12 @@ export const TaskProvider = ({ children }) => {
     setTasks(tasks.filter((_, index) => index !== taskIndex));
   };
 
-  const updateTask = (taskIndex, newText) => {
+  const updateTask = (taskIndex, newText, newPriority) => {
     setTasks(
       tasks.map((task, i) =>
-        taskIndex === i ? { ...task, text: newText } : task
+        taskIndex === i
+          ? { ...task, text: newText, priority: newPriority }
+          : task
       )
     );
   };
