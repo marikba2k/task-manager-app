@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useTasks } from "../context/TaskContext"; // Import Task Context
 
 const Tasks = () => {
-  const { tasks, addTask, removeTask } = useTasks();
+  const { tasks, addTask, removeTask, toggleTaskCompleted } = useTasks();
   const [newTask, setNewTask] = useState();
 
   const handleAddTask = () => {
@@ -12,6 +12,7 @@ const Tasks = () => {
       setNewTask("");
     }
   };
+
   return (
     <div>
       <h1>Task List</h1>
@@ -22,10 +23,23 @@ const Tasks = () => {
         placeholder="Enter a task..."
       />
       <button onClick={handleAddTask}>Add Task</button>
+
       <ul>
         {tasks.map((task, index) => (
           <li key={index}>
-            {task} <button onClick={() => removeTask(index)}>Remove</button>
+            <input
+              type="checkbox"
+              checked={task.completed}
+              onChange={() => toggleTaskCompleted(index)} // Toggle task status
+            />
+            <span
+              style={{
+                textDecoration: task.completed ? "line-through" : "none",
+              }}
+            >
+              {task.text}
+            </span>
+            <button onClick={() => removeTask(index)}>Remove</button>
           </li>
         ))}
       </ul>
