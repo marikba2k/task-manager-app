@@ -32,6 +32,10 @@ export const TaskProvider = ({ children }) => {
     );
   };
 
+  const clearAllTasks = () => {
+    setTasks([]); // Reset tasks to an empty array
+  };
+
   const toggleTaskCompleted = (taskIndex) => {
     setTasks(
       tasks.map((task, index) =>
@@ -44,7 +48,14 @@ export const TaskProvider = ({ children }) => {
 
   return (
     <TaskContext.Provider
-      value={{ tasks, addTask, removeTask, updateTask, toggleTaskCompleted }}
+      value={{
+        tasks,
+        addTask,
+        removeTask,
+        updateTask,
+        toggleTaskCompleted,
+        clearAllTasks,
+      }}
     >
       {children}
     </TaskContext.Provider>

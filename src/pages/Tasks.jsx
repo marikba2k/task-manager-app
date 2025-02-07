@@ -3,8 +3,14 @@ import { useState } from "react";
 import { useTasks } from "../context/TaskContext"; // Import Task Context
 
 const Tasks = () => {
-  const { tasks, addTask, removeTask, updateTask, toggleTaskCompleted } =
-    useTasks();
+  const {
+    tasks,
+    addTask,
+    removeTask,
+    updateTask,
+    toggleTaskCompleted,
+    clearAllTasks,
+  } = useTasks();
   const [newTask, setNewTask] = useState();
 
   const [editingIndex, setEditingIndex] = useState(null); // Tracks the index of the task being edited
@@ -54,7 +60,9 @@ const Tasks = () => {
         <button onClick={() => setFilter("all")}>All</button>
         <button onClick={() => setFilter("completed")}>Completed</button>
         <button onClick={() => setFilter("incomplete")}>Incomplete</button>
+        <button onClick={clearAllTasks}>Clear All</button>
       </div>
+
       <input
         type="text"
         value={newTask || ""}
