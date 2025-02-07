@@ -24,6 +24,14 @@ export const TaskProvider = ({ children }) => {
     setTasks(tasks.filter((_, index) => index !== taskIndex));
   };
 
+  const updateTask = (taskIndex, newText) => {
+    setTasks(
+      tasks.map((task, i) =>
+        taskIndex === i ? { ...task, text: newText } : task
+      )
+    );
+  };
+
   const toggleTaskCompleted = (taskIndex) => {
     setTasks(
       tasks.map((task, index) =>
@@ -36,7 +44,7 @@ export const TaskProvider = ({ children }) => {
 
   return (
     <TaskContext.Provider
-      value={{ tasks, addTask, removeTask, toggleTaskCompleted }}
+      value={{ tasks, addTask, removeTask, updateTask, toggleTaskCompleted }}
     >
       {children}
     </TaskContext.Provider>
