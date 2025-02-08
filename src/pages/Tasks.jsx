@@ -11,6 +11,7 @@ const Tasks = () => {
     toggleTaskCompleted,
     clearAllTasks,
   } = useTasks();
+
   const [newTask, setNewTask] = useState();
   const [priority, setPriority] = useState("Medium"); // Default priority for new tasks
 
@@ -26,9 +27,9 @@ const Tasks = () => {
     let filtered = tasks;
 
     if (filter === "completed") {
-      return tasks.filter((task) => task.completed);
+      filtered = filtered.filter((task) => task.completed);
     } else if (filter === "incomplete") {
-      return tasks.filter((task) => !task.completed);
+      filtered = filtered.filter((task) => !task.completed);
     }
 
     if (priorityFilter !== "all") {
