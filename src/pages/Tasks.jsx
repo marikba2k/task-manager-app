@@ -1,6 +1,9 @@
-import React from "react";
 import { useState } from "react";
-import { useTasks } from "../context/TaskContext"; // Import Task Context
+import { useTasks } from "../context/TaskContext";
+import TaskList from "../components/TaskList";
+import TaskForm from "../components//TaskForm";
+import TaskFilters from "../components//TaskFilters";
+import TaskActions from "../components//TaskActions";
 
 const Tasks = () => {
   const {
@@ -12,66 +15,36 @@ const Tasks = () => {
     clearAllTasks,
   } = useTasks();
 
-  const [newTask, setNewTask] = useState();
-  const [priority, setPriority] = useState("Medium"); // Default priority for new tasks
-
-  const [editingIndex, setEditingIndex] = useState(null); // Tracks the index of the task being edited
-  const [editText, setEditText] = useState(""); // Tracks the updated task text
-
-  const [filter, setFilter] = useState("all"); // "all", "completed", or "incomplete"
-
-  const [priorityFilter, setPriorityFilter] = useState("all"); // Add priority filter state
-  const [editingPriority, setEditingPriority] = useState("Medium"); // Tracks the priority of the task being edited
+  const [filter, setFilter] = useState("all");
+  const [priorityFilter, setPriorityFilter] = useState("all");
+  const [editingTaskId, setEditingTaskId] = useState(null);
 
   const getFilteredTasks = () => {
     let filtered = tasks;
-
-    if (filter === "completed") {
+    if (filter === "completed")
       filtered = filtered.filter((task) => task.completed);
-    } else if (filter === "incomplete") {
+    else if (filter === "incomplete")
       filtered = filtered.filter((task) => !task.completed);
-    }
 
-    if (priorityFilter !== "all") {
+    if (priorityFilter !== "all")
       filtered = filtered.filter((task) => task.priority === priorityFilter);
-    }
-    return filtered; // Default: Show all tasks
+
+    return filtered;
   };
 
   const filteredTasks = getFilteredTasks();
 
-  const getSortedTasks = () => {
-    return [...tasks].sort((a, b) => {
-      const priorityOrder = { High: 1, Medium: 2, Low: 3 };
-      return priorityOrder[a.priority] - priorityOrder[b.priority];
-    });
+  const handleEdit = (task) => {
+    setEditingTaskId(task);
   };
 
-  const handleAddTask = () => {
-    if (newTask.trim() !== "") {
-      addTask(newTask, priority);
-      setNewTask("");
-    }
+  const handleSaveEdit = (taskId, updatedTask) => {
+    updateTask(taskId, updatedTask);
+    setEditingTaskId(null); // Exit edit mode after saving
   };
 
-  const enableEdit = (index, currentText, currentPriority) => {
-    setEditingPriority(priority);
-    setEditingIndex(index);
-    setEditText(currentText);
-  };
-
-  const saveEdit = (task) => {
-    if (editText.trim() !== "") {
-      const updatedTask = {
-        text: editText,
-        priority: editingPriority,
-        completed: task.completed,
-      };
-      updateTask(task._id, updatedTask); // Update state
-      setEditingIndex(null); // Exit edit mode
-      setEditText(""); // Clear edit input
-      setEditingPriority("Medium");
-    }
+  const handleCancelEdit = () => {
+    setEditingTaskId(null);
   };
 
   const handleCheckboxChange = (task) => {
@@ -87,92 +60,23 @@ const Tasks = () => {
   return (
     <div>
       <h1>Task List</h1>
-      <div>
-        <button onClick={() => setFilter("all")}>All</button>
-        <button onClick={() => setFilter("completed")}>Completed</button>
-        <button onClick={() => setFilter("incomplete")}>Incomplete</button>
-        <select onChange={(e) => setPriorityFilter(e.target.value)}>
-          <option value="all">All Priorities</option>
-          <option value="High">High</option>
-          <option value="Medium">Medium</option>
-          <option value="Low">Low</option>
-        </select>
-        <button onClick={clearAllTasks}>Clear All</button>
-      </div>
-
-      <input
-        type="text"
-        value={newTask || ""}
-        onChange={(e) => setNewTask(e.target.value)}
-        placeholder="Enter a task..."
+      <TaskFilters
+        filter={filter}
+        setFilter={setFilter}
+        priorityFilter={priorityFilter}
+        setPriorityFilter={setPriorityFilter}
       />
-      <select value={priority} onChange={(e) => setPriority(e.target.value)}>
-        <option value="High">High</option>
-        <option value="Medium">Medium</option>
-        <option value="Low">Low</option>
-      </select>
-      <button onClick={handleAddTask}>Add Task</button>
-
-      <ul>
-        {filteredTasks.map((task, index) => (
-          <li key={index}>
-            {editingIndex === index ? (
-              // Edit mode
-              <>
-                <input
-                  type="text"
-                  value={editText}
-                  onChange={(e) => setEditText(e.target.value)}
-                />
-                <select
-                  value={editingPriority}
-                  onChange={(e) => setEditingPriority(e.target.value)}
-                >
-                  <option value="High">High</option>
-                  <option value="Medium">Medium</option>
-                  <option value="Low">Low</option>
-                </select>
-                <button onClick={() => saveEdit(task)}>Save</button>
-                <button onClick={() => setEditingIndex(null)}>Cancel</button>
-              </>
-            ) : (
-              // Display mode
-              <>
-                <input
-                  type="checkbox"
-                  checked={task.completed}
-                  onChange={() => handleCheckboxChange(task)}
-                />
-                <span
-                  style={{
-                    textDecoration: task.completed ? "line-through" : "none",
-                  }}
-                >
-                  {task.text}
-                </span>
-                <span
-                  style={{
-                    color:
-                      task.priority === "High"
-                        ? "red"
-                        : task.priority === "Medium"
-                        ? "orange"
-                        : "green",
-                  }}
-                >
-                  {task.priority}
-                </span>
-                <button
-                  onClick={() => enableEdit(index, task.text, task.priority)}
-                >
-                  Edit
-                </button>
-                <button onClick={() => removeTask(task._id)}>Remove</button>
-              </>
-            )}
-          </li>
-        ))}
-      </ul>
+      <TaskForm onAdd={addTask} />
+      <TaskActions onClear={clearAllTasks} />
+      <TaskList
+        tasks={filteredTasks}
+        editingTaskId={editingTaskId}
+        onEdit={handleEdit}
+        onDelete={removeTask}
+        onToggle={handleCheckboxChange}
+        onSave={handleSaveEdit}
+        onCancel={handleCancelEdit}
+      />
     </div>
   );
 };
