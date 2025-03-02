@@ -60,18 +60,28 @@ const Tasks = () => {
     setEditText(currentText);
   };
 
-  const saveEdit = (index) => {
+  const saveEdit = (task) => {
     if (editText.trim() !== "") {
-      const updatedTasks = tasks.map((task, i) =>
-        i === index
-          ? { ...task, text: editText, priority: editingPriority }
-          : task
-      );
-      updateTask(index, editText, editingPriority); // Update state
+      const updatedTask = {
+        text: editText,
+        priority: editingPriority,
+        completed: task.completed,
+      };
+      updateTask(task._id, updatedTask); // Update state
       setEditingIndex(null); // Exit edit mode
       setEditText(""); // Clear edit input
       setEditingPriority("Medium");
     }
+  };
+
+  const handleCheckboxChange = (task) => {
+    const updatedTask = {
+      text: task.text,
+      priority: task.priority,
+      completed: !task.completed, // Toggle completed status
+    };
+
+    updateTask(task._id, updatedTask); // Call update function with new data
   };
 
   return (
@@ -122,7 +132,7 @@ const Tasks = () => {
                   <option value="Medium">Medium</option>
                   <option value="Low">Low</option>
                 </select>
-                <button onClick={() => saveEdit(index)}>Save</button>
+                <button onClick={() => saveEdit(task)}>Save</button>
                 <button onClick={() => setEditingIndex(null)}>Cancel</button>
               </>
             ) : (
@@ -131,7 +141,7 @@ const Tasks = () => {
                 <input
                   type="checkbox"
                   checked={task.completed}
-                  onChange={() => toggleTaskCompleted(index)}
+                  onChange={() => handleCheckboxChange(task)}
                 />
                 <span
                   style={{
@@ -157,7 +167,7 @@ const Tasks = () => {
                 >
                   Edit
                 </button>
-                <button onClick={() => removeTask(index)}>Remove</button>
+                <button onClick={() => removeTask(task._id)}>Remove</button>
               </>
             )}
           </li>
