@@ -1,3 +1,4 @@
+import styles from "../styles/TaskItem.module.css";
 import { useState } from "react";
 
 const TaskItem = ({
@@ -21,7 +22,9 @@ const TaskItem = ({
   };
 
   return (
-    <li>
+    <li
+      className={`${styles.taskItem} ${task.completed ? styles.completed : ""}`}
+    >
       {isEditing ? (
         <>
           <input
@@ -43,25 +46,30 @@ const TaskItem = ({
       ) : (
         <>
           <input type="checkbox" checked={task.completed} onChange={onToggle} />
+          <span className={styles.taskText}>{task.text}</span>
           <span
-            style={{ textDecoration: task.completed ? "line-through" : "none" }}
-          >
-            {task.text}
-          </span>
-          <span
-            style={{
-              color:
-                task.priority === "High"
-                  ? "red"
-                  : task.priority === "Medium"
-                  ? "orange"
-                  : "green",
-            }}
+            className={`${styles.priority} ${
+              task.priority === "High"
+                ? styles.priorityHigh
+                : task.priority === "Medium"
+                ? styles.priorityMedium
+                : styles.priorityLow
+            }`}
           >
             {task.priority}
           </span>
-          <button onClick={() => onEdit(task._id)}>Edit</button>
-          <button onClick={() => onDelete(task._id)}>Remove</button>
+          <button
+            onClick={() => onEdit(task._id)}
+            className={styles.editButton}
+          >
+            Edit
+          </button>
+          <button
+            onClick={() => onDelete(task._id)}
+            className={styles.deleteButton}
+          >
+            Remove
+          </button>
         </>
       )}
     </li>

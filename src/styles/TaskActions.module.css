@@ -1,0 +1,17 @@
+.filters {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 1rem;
+}
+
+.filterButton,
+.prioritySelect {
+  padding: 8px;
+  border-radius: var(--border-radius);
+  border: 1px solid var(--secondary);
+}
+
+.filterButton {
+  background: var(--primary);
+  color: white;
+}

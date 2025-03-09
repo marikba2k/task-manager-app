@@ -1,3 +1,5 @@
+import styles from "../styles/TaskForm.module.css";
+
 import { useState } from "react";
 
 const TaskForm = ({ onAdd }) => {
@@ -12,8 +14,9 @@ const TaskForm = ({ onAdd }) => {
   };
 
   return (
-    <div>
+    <div className={styles.taskForm}>
       <input
+        className={styles.taskInput}
         type="text"
         value={taskText}
         onChange={(e) => setTaskText(e.target.value)}
@@ -24,7 +27,9 @@ const TaskForm = ({ onAdd }) => {
         <option value="Medium">Medium</option>
         <option value="Low">Low</option>
       </select>
-      <button onClick={handleSubmit}>Add Task</button>
+      <button onClick={handleSubmit} className={styles.addButton}>
+        Add Task
+      </button>
     </div>
   );
 };

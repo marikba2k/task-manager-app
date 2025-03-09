@@ -1,3 +1,5 @@
+import styles from "../styles/TaskList.module.css";
+
 import TaskItem from "./TaskItem";
 
 const TaskList = ({
@@ -10,7 +12,7 @@ const TaskList = ({
   onCancel,
 }) => {
   return (
-    <ul>
+    <ul className={styles.taskList}>
       {tasks.map((task) => (
         <TaskItem
           key={task._id}
