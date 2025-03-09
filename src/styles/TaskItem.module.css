@@ -1,0 +1,103 @@
+.taskItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #ffffff;
+  padding: 12px;
+  margin-bottom: 8px;
+  border-radius: 8px;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+  transition: background 0.3s ease-in-out;
+}
+
+.taskItem:hover {
+  background: #f8f9fa;
+}
+
+.completed {
+  text-decoration: line-through;
+  color: #6c757d;
+}
+
+/* Checkbox */
+.taskItem input[type="checkbox"] {
+  margin-right: 10px;
+  cursor: pointer;
+  transform: scale(1.2);
+}
+
+/* Task Text */
+.taskText {
+  flex: 1;
+  font-size: 16px;
+  color: #333;
+  margin-left: 8px;
+  word-break: break-word;
+}
+
+/* Priority Labels */
+.priority {
+  font-size: 14px;
+  font-weight: bold;
+  padding: 4px 8px;
+  border-radius: 5px;
+  min-width: 70px;
+  text-align: center;
+}
+
+/* Priority Colors */
+.priorityHigh {
+  background-color: red;
+  color: white;
+}
+
+.priorityMedium {
+  background-color: orange;
+  color: white;
+}
+
+.priorityLow {
+  background-color: green;
+  color: white;
+}
+
+/* Buttons */
+.taskItem button {
+  padding: 6px 10px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.editButton {
+  background: #007bff;
+  color: white;
+}
+
+.editButton:hover {
+  background: #0056b3;
+}
+
+.deleteButton {
+  background: red;
+  color: white;
+}
+
+.deleteButton:hover {
+  background: darkred;
+}
+
+/* Edit Mode */
+.editMode {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.editMode input,
+.editMode select {
+  padding: 6px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}

@@ -1,0 +1,22 @@
+.navbar {
+  display: flex;
+  justify-content: center;
+  background: var(--primary);
+  padding: 1rem;
+}
+
+.navbar ul {
+  list-style: none;
+  display: flex;
+  gap: 20px;
+}
+
+.navbar a {
+  text-decoration: none;
+  color: black;
+  font-weight: bold;
+}
+
+.navbar a.active {
+  text-decoration: underline;
+}

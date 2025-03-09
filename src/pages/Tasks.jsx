@@ -58,7 +58,7 @@ const Tasks = () => {
   };
 
   return (
-    <div>
+    <div className="container">
       <h1>Task List</h1>
       <TaskFilters
         filter={filter}

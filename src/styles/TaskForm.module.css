@@ -1,0 +1,17 @@
+.taskForm {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 1rem;
+}
+
+.taskInput {
+  flex: 1;
+  padding: 8px;
+  border: 1px solid var(--secondary);
+  border-radius: var(--border-radius);
+}
+
+.addButton {
+  background: var(--primary);
+  color: white;
+}
